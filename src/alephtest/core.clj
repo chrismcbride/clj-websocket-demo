@@ -1,27 +1,25 @@
 (ns alephtest.core
-  (:import java.io.File)
-  (:use lamina.core aleph.http hiccup.core hiccup.page))
+  (:use lamina.core aleph.http hiccup.core hiccup.page compojure.core)
+  (:require [compojure.route :as route]))
 
-(defn render-html []
-  (html 
-    (include-js "cljs.js")
-    [:input {:type "text" :value "Hello world"}]))
+(defn render-html [& content]
+  (html5
+    [:head [:title "Websocket demo"] (include-js "js/cljs.js")]
+    [:body content]))
+
+(def index-html
+  [:div
+    [:div [:input {:type "text" :value "Hello world"}]]
+    [:textarea#socketOuput {:rows 15 :cols 30 :readonly true}]])
 
 (defn handle-websocket [channel handshake]
   (siphon (map* #(str "balh-" %) channel) channel))
 
-(defn handle-http [channel request]
-  (enqueue channel
-    {:status 200
-     :headers {"content-type" "text/html"}
-     :body (cond 
-             (. (:uri request) (endsWith ".js")) (File. (str "public/js" (:uri request)))
-             :else (render-html))}))
-
-(defn send-response [channel request]
-  (if (:websocket request)
-    (handle-websocket channel request)
-    (handle-http channel request)))
+(defroutes my-app 
+  (GET "/" [] (render-html index-html))
+  (GET "/socket" [] (wrap-aleph-handler handle-websocket))
+  (route/resources "/")
+  (route/not-found (render-html [:p "Page not found"])))
 
 (defn -main []
-  (start-http-server send-response {:port 8080 :websocket true}))
+  (start-http-server (wrap-ring-handler my-app) {:port 8080 :websocket true}))

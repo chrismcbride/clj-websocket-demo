@@ -1935,7 +1935,7 @@ o.f = function(a, c) {
   return new V(h, ["\ufdd0'parents", "\ufdd0'descendants", "\ufdd0'ancestors"], {"\ufdd0'parents":new V(h, [], {}), "\ufdd0'descendants":new V(h, [], {}), "\ufdd0'ancestors":new V(h, [], {})})
 }.call(h));
 function Rb() {
-  var a = new WebSocket("ws://localhost:8080");
+  var a = new WebSocket("ws://localhost:8080/socket");
   return a.onopen = function() {
     a.onmessage = function(a) {
       return console.log(a)
