@@ -1,5 +1,5 @@
 (defproject my-project "1.0.0"
-  :main alephtest.core
+  :main alephtest.server
   :dependencies [
     [org.clojure/clojure "1.3.0"]
     [compojure "1.0.1"]
