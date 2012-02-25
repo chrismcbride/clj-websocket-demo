@@ -1,12 +1,17 @@
-(ns websocket)
+(ns alephtest.websocket
+  (:require [alephtest.js-utils :as util]))
 
 (defn ^:export init []
-  (do 
-    (connect!))
-
+  (let [socket(connect!)] 
+    (on-open socket 
+      (fn [] (do (on-message socket #(util/log (. % -data)))
+               (. socket send "hello"))))))
+      
 (defn connect! []
-  (let [socket (js/WebSocket. "ws://localhost:8080/socket")]
-    (do
-      (set! (. socket -onopen) (fn []
-        (set! (. socket -onmessage) (fn [x] (. js/console log x)))
-        (.send socket "hello"))))))
+  (js/WebSocket. "ws://localhost:8080/socket"))
+    
+(defn on-open [socket func]
+  (set! (. socket -onopen) func))
+
+(defn on-message [socket func]
+  (set! (. socket -onmessage) func))

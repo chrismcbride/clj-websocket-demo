@@ -3,8 +3,13 @@
 
 (defn layout [& content]
   (html5
-    [:head [:title "Websocket demo"] (include-js "js/cljs.js")]
-    [:body content]))
+    [:head 
+      [:title "Websocket demo"]
+      (include-js "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")]
+    [:body 
+      [:div#container
+        content]
+      (include-js "js/cljs.js")]))
 
 (defn index-html []
   (layout

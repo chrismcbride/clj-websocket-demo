@@ -4,6 +4,7 @@
     [org.clojure/clojure "1.3.0"]
     [compojure "1.0.1"]
     [hiccup "1.0.0-SNAPSHOT"]
+    [jayq "0.1.0-SNAPSHOT"]
     [aleph "0.2.1-alpha2-SNAPSHOT"]]
   :plugins [[lein-cljsbuild "0.0.14"]]
   :cljsbuild {
