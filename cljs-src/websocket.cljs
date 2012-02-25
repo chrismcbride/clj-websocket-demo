@@ -1,10 +1,10 @@
 (ns alephtest.websocket
-  (:require [alephtest.js-utils :as util]))
+  (:use [alephtest.js-utils :only [log]]))
 
 (defn ^:export init []
   (let [socket(connect!)] 
     (on-open socket 
-      (fn [] (do (on-message socket #(util/log (. % -data)))
+      (fn [] (do (on-message socket #(log (. % -data)))
                (. socket send "hello"))))))
       
 (defn connect! []

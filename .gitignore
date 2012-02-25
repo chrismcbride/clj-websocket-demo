@@ -2,6 +2,8 @@
 *jar
 /lib
 /classes
+/.clojurescript-output
+/resources/public/*
 /native
 /.lein-failures
 /checkouts
