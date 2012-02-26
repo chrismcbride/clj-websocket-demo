@@ -4,6 +4,7 @@
 /classes
 /.clojurescript-output/**/*
 /.lein-cljsbuild-compiler-0/**/*
+.lein-cljsbuild-compiler-0/
 /resources/public/**/*
 /native
 /.lein-failures
