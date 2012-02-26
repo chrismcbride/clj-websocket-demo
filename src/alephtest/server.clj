@@ -4,7 +4,7 @@
             [alephtest.templates :as tmpl]))
 
 (defn handle-websocket [channel handshake]
-  (siphon (map* #(str "balh-" %) channel) channel))
+  (receive-all channel #(println "message:" %)))
 
 (defroutes my-app 
   (GET "/" [] (tmpl/index-html))
