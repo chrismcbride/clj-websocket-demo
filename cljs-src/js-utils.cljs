@@ -1,4 +1,5 @@
-(ns clj-websocket-demo.js-utils)
+(ns clj-websocket-demo.js-utils
+  (:require [goog.json :as json]))
 
 (defn log [data]
   (. js/console log data))
@@ -20,3 +21,6 @@
                (assoc m (clj->js k) (clj->js v))) {} x))
     (coll? x) (apply array (map clj->js x))
     :else x))
+
+(defn clj->json [x]
+  (json/serialize (clj->js x)))
