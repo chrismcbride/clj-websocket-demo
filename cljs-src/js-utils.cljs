@@ -1,4 +1,4 @@
-(ns alephtest.js-utils)
+(ns clj-websocket-demo.js-utils)
 
 (defn log [data]
   (. js/console log data))

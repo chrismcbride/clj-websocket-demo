@@ -1,8 +1,8 @@
-(ns alephtest.main
-  (:require [alephtest.websocket :as sock]
+(ns clj-websocket-demo.main
+  (:require [clj-websocket-demo.websocket :as sock]
             [goog.json :as json])
   (:use [jayq.core :only [$ bind]]
-        [alephtest.js-utils :only [log clj->js current-timestamp-ms]]))
+        [clj-websocket-demo.js-utils :only [log clj->js current-timestamp-ms]]))
 
 (defn ^:export init []
   (let [socket (sock/create-socket #(log (. % -data)))

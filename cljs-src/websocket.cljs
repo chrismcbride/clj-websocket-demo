@@ -1,4 +1,4 @@
-(ns alephtest.websocket)
+(ns clj-websocket-demo.websocket)
 
 (defn create-socket [on-message-func]
   (let [socket(connect!)]
