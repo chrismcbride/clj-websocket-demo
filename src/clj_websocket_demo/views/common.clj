@@ -1,7 +1,10 @@
 (ns clj-websocket-demo.views.common
   (:use [noir.core :only [defpartial defpage]]
         [hiccup.page-helpers :only [html5 include-js]]
+        [aleph.redis]
         [noir-async.core]))
+
+(def redis (redis-client {:host "localhost"}))
 
 (defpartial layout [& content]
   (html5
@@ -15,11 +18,14 @@
 (defpage "/" {}
   (layout
     [:div
+      [:button#record "record"]
+      [:button#stop "stop"]
+      [:button#play "play"]
       [:textarea#socketOutput {:rows 20 :cols 50 :readonly true}]]
-    (include-js "js/cljs.js")
-    [:script "clj_websocket_demo.main.init()"]))
+    (include-js "js/cljs.js")))
 
-(defwebsocket "/socket" {} conn
-  (send-message conn "Hello from the server!")
-  (on-receive conn (fn [msg] (println msg)))
-  (on-close conn (fn [] (println "Socket down!"))))
+(defwebsocket "/socket/:id/record" {:keys [id]} conn
+  (on-receive conn (fn [msg] (redis [:rpush id msg]))))
+
+(defwebsocket "/socket/:id/play" {:keys [id]} conn
+  (send-message conn @(redis [:lpop id])))

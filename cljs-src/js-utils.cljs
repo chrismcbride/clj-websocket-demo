@@ -5,7 +5,7 @@
   (. js/console log data))
 
 (defn current-timestamp-ms []
-  (. (new js/Date) getTime))
+  (.getTime (new js/Date)))
 
 (defn clj->js
   "Recursively transforms ClojureScript maps into Javascript objects,
