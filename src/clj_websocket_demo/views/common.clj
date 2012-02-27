@@ -1,5 +1,6 @@
 (ns clj-websocket-demo.views.common
   (:use [noir.core :only [defpartial defpage]]
+        [noir.statuses :only [set-page!]]
         [hiccup.page-helpers :only [html5 include-js]]
         [aleph.redis]
         [noir-async.core]))
@@ -29,3 +30,5 @@
 
 (defwebsocket "/socket/:id/play" {:keys [id]} conn
   (send-message conn @(redis [:lpop id])))
+
+(set-page! 404 (layout [:span "Page not found!"]))
