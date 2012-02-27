@@ -2,9 +2,10 @@
 *jar
 /lib
 /classes
-/.clojurescript-output/**/*
+/.clojurescript-output
 /.lein-cljsbuild-compiler-0/**/*
 .lein-cljsbuild-compiler-0/
+.lein-plugins/
 /resources/public/**/*
 /native
 /.lein-failures
