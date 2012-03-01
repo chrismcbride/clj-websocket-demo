@@ -1,7 +1,7 @@
 (ns clj-websocket-demo.main
   (:require [clj-websocket-demo.websocket :as sock])
   (:use [jayq.core :only [$ bind append]]
-        [clj-websocket-demo.js-utils :only [clj->json current-timestamp-ms]]))
+        [clj-websocket-demo.js-utils :only [current-timestamp-ms]]))
 
 (def $body ($ :body))
 (def $socket-output ($ :#socketOutput))
@@ -14,13 +14,15 @@
 (def play-url (str user-id "/play"))
 
 (def is-recording? (atom false))
+(def inital-timestamp-ms (atom 0))
 
 (bind-mousemove (sock/create-socket record-url))
 
 (bind $record-button :click 
   (fn [] 
     (update-socket-status "recording")
-    (reset! is-recording? true)))
+    (reset! is-recording? true)
+    (reset! inital-timestamp-ms (current-timestamp-ms))))
 
 (bind $stop-button :click 
   (fn []
@@ -31,18 +33,17 @@
   (fn []
     (update-socket-status "playing")
     (reset! is-recording? false)
-    (sock/create-socket play-url {:on-message #(update-socket-status (.-data %))})))
+    (sock/create-socket play-url {:on-message #(update-socket-status (.-data %))
+                                  :on-close #(update-socket-status "Playback finished")})))
 
 (defn bind-mousemove [socket]
-  (let [inital-timestamp-ms (current-timestamp-ms)]
-    (bind $body :mousemove
-      (fn [e]
-        (when @is-recording?
-          (sock/send! socket 
-            (clj->json
-              {:x (. e -pageX)
-               :y (. e -pageY)
-               :offset (- (current-timestamp-ms) inital-timestamp-ms)})))))))
+  (bind $body :mousemove
+    (fn [e]
+      (when @is-recording?
+        (sock/send! socket 
+          {:x (. e -pageX)
+           :y (. e -pageY)
+           :offset (- (current-timestamp-ms) @inital-timestamp-ms)})))))
 
 (defn update-socket-status [msg]
   (append $socket-output (str msg "\n")))
