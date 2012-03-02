@@ -6,7 +6,7 @@
 /.lein-cljsbuild-compiler-0/**/*
 .lein-cljsbuild-compiler-0/
 .lein-plugins/
-/resources/public/**/*
+resources/public/js/cljs.js
 /native
 /.lein-failures
 /checkouts

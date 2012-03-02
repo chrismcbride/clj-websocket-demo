@@ -2,7 +2,7 @@
   (:require [cheshire.core :as json]) 
   (:use [noir.core :only [defpartial defpage]]
         [noir.statuses :only [set-page!]]
-        [hiccup.page-helpers :only [html5 include-js]]
+        [hiccup.page-helpers :only [html5 include-js include-css]]
         [aleph.redis]
         [noir-async.core]
         [noir-async.utils :only [set-timeout]]))
@@ -13,7 +13,8 @@
   (html5
     [:head 
       [:title "Websocket demo"]
-      (include-js "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")]
+      (include-js "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js")
+      (include-css "css/main.css")]
     [:body 
       [:div#container
         content]]))

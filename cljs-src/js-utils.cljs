@@ -24,3 +24,6 @@
 
 (defn clj->json [x]
   (json/serialize (clj->js x)))
+
+(defn json->clj [x]
+  (js->clj (json/parse x) :keywordize-keys true))

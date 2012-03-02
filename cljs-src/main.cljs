@@ -1,7 +1,8 @@
 (ns clj-websocket-demo.main
   (:require [clj-websocket-demo.websocket :as sock])
   (:use [jayq.core :only [$ bind append]]
-        [clj-websocket-demo.js-utils :only [current-timestamp-ms]]))
+        [crate.core :only [html]]
+        [clj-websocket-demo.js-utils :only [log current-timestamp-ms json->clj]]))
 
 (def $body ($ :body))
 (def $socket-output ($ :#socketOutput))
@@ -15,6 +16,11 @@
 
 (def is-recording? (atom false))
 (def inital-timestamp-ms (atom 0))
+
+(defn draw-mouse [eventMap]
+  (append $body 
+    (html [:div {:class "mouseLine" :style (str "left:" (:x eventMap) "px;"
+                                                "top:" (:y eventMap) "px;")}])))
 
 (bind-mousemove (sock/create-socket record-url))
 
@@ -33,7 +39,7 @@
   (fn []
     (update-socket-status "playing")
     (reset! is-recording? false)
-    (sock/create-socket play-url {:on-message #(update-socket-status (.-data %))
+    (sock/create-socket play-url {:on-message #(draw-mouse (json->clj (.-data %)))
                                   :on-close #(update-socket-status "Playback finished")})))
 
 (defn bind-mousemove [socket]

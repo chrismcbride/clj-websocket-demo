@@ -1,0 +1,6 @@
+.mouseLine {
+	background-color: orange;
+	height: 2px;
+	width: 2px;
+	position: absolute;
+}
