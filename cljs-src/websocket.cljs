@@ -1,5 +1,4 @@
-(ns clj-websocket-demo.websocket
-  (:use [clj-websocket-demo.js-utils :only [clj->json]]))
+(ns clj-websocket-demo.websocket)
 
 (defn create-socket 
   "Creates and returns a js websocket. Takes a map of functions to bind to the socket"
@@ -25,4 +24,4 @@
   (set! (. socket -onmessage) func))
 
 (defn send! [socket msg]
-  (. socket send (clj->json msg)))
+  (. socket send (if (string? msg) msg (pr-str msg))))

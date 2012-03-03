@@ -2,7 +2,6 @@
   :main clj-websocket-demo.server
   :dependencies [
     [org.clojure/clojure "1.3.0"]
-    [cheshire "2.2.0"]
     [crate "0.1.0-SNAPSHOT"]
     [noir-async "0.1.4"]
     [jayq "0.1.0-SNAPSHOT"]]

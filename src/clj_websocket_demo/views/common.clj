@@ -1,5 +1,4 @@
 (ns clj-websocket-demo.views.common
-  (:require [cheshire.core :as json]) 
   (:use [noir.core :only [defpartial defpage]]
         [noir.statuses :only [set-page!]]
         [hiccup.page-helpers :only [html5 include-js include-css]]
@@ -33,9 +32,9 @@
 
 (defwebsocket "/socket/:id/play" {:keys [id]} conn
   (let [inital-time-in-ms (System/currentTimeMillis)]
-    (doseq [jsonValue (take-while (comp not nil?) (repeatedly #(deref (redis [:lpop id]))))]
-      (let [msOffset (:offset (json/parse-string jsonValue true))
+    (doseq [mapString (take-while (comp not nil?) (repeatedly #(deref (redis [:lpop id]))))]
+      (let [msOffset (:offset (read-string mapString))
             msDelay (- msOffset (- (System/currentTimeMillis) inital-time-in-ms))]
-        (set-timeout msDelay #(send-message conn jsonValue))))))
+        (set-timeout msDelay #(send-message conn mapString))))))
 
 (set-page! 404 (layout [:span "Page not found!"]))
