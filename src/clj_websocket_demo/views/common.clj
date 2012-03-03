@@ -23,8 +23,8 @@
     [:div
       [:button#record "record"]
       [:button#stop "stop"]
-      [:button#play "play"]
-      [:textarea#socketOutput {:rows 20 :cols 50 :readonly true}]]
+      [:button#play "play"]]
+    [:textarea#socketOutput {:rows 20 :cols 50 :readonly true}]
     (include-js "js/cljs.js")))
 
 (defwebsocket "/socket/:id/record" {:keys [id]} conn
@@ -35,6 +35,6 @@
     (doseq [mapString (take-while (comp not nil?) (repeatedly #(deref (redis [:lpop id]))))]
       (let [msOffset (:offset (read-string mapString))
             msDelay (- msOffset (- (System/currentTimeMillis) inital-time-in-ms))]
-        (set-timeout msDelay #(send-message conn mapString))))))
+        (set-timeout (if (neg? msDelay) 0 msDelay) #(send-message conn mapString))))))
 
 (set-page! 404 (layout [:span "Page not found!"]))

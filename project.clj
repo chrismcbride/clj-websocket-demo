@@ -13,6 +13,7 @@
       :jar true
       :compiler {
         :output-to "resources/public/js/cljs.js"
- ;       :optimizations :advanced
-        :optimizations :simple
+        :externs ["resources/externs/jquery.js"]
+        :optimizations :advanced
+        ;:optimizations :simple
         :pretty-print true}}]})

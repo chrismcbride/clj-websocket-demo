@@ -1,11 +1,12 @@
 (ns clj-websocket-demo.main
   (:require [clj-websocket-demo.websocket :as sock]
+            [crate.core :as crate]
             [waltz.state :as state])
   (:use [jayq.core :only [$ bind append show hide]]
         [cljs.reader :only [read-string]]
-        [clj-websocket-demo.js-utils :only [log current-timestamp-ms]]
-        [crate.core :only [html]])
-  (:use-macros [waltz.macros :only [in out defstate deftrans]]))
+        [clj-websocket-demo.js-utils :only [log current-timestamp-ms]])
+  (:use-macros [waltz.macros :only [in out defstate deftrans]]
+               [crate.macros :only [defpartial]]))
 
 (def $body ($ :body))
 (def $socket-output ($ :#socketOutput))
@@ -13,16 +14,17 @@
 (def record-url (str user-id "/record"))
 (def play-url (str user-id "/play"))
 (def inital-timestamp-ms (atom 0))
-(def sm (state/machine "das"))
-(state/set-debug sm false)
+(def sm (state/machine "socket"))
+(state/set-debug sm false) ;this doesnt seem to work
 
 (defn update-socket-status [msg]
   (append $socket-output (str msg "\n")))
 
+(defpartial mouse-point [x y]
+  [:div {:class "mouseLine" :style (str "left:" x "px; top:" y "px;")}])
+
 (defn draw-mouse [eventMap]
-  (append $body 
-    (html [:div {:class "mouseLine" :style (str "left:" (:x eventMap) "px;"
-                                                "top:" (:y eventMap) "px;")}])))
+  (append $body (mouse-point (:x eventMap) (:y eventMap))))
 
 (defstate sm :stop
     (in [] (do
