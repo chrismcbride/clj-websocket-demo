@@ -7,6 +7,7 @@
 .lein-cljsbuild-compiler-0/
 .lein-plugins/
 resources/public/js/cljs.js
+dump.rdb
 /native
 /.lein-failures
 /checkouts
