@@ -10,4 +10,5 @@
         noir-handler (nr-server/gen-handler {:mode mode})]
     (start-http-server
       (wrap-ring-handler noir-handler)
-      {:port port :websocket true})))
+      {:port port :websocket true})
+    (println (str "Server running on port " port))))

@@ -1,7 +1,7 @@
 (defproject clj-websocket-demo "1.0.0"
   :main clj-websocket-demo.server
   :dependencies [
-    [org.clojure/clojure "1.3.0"]
+    [org.clojure/clojure "1.4.0-beta3"]
     [crate "0.1.0-SNAPSHOT"]
     [noir-async "0.1.4"]
     [jayq "0.1.0-SNAPSHOT"]]
